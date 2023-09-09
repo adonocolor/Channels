@@ -15,12 +15,13 @@ export class Hint {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({})
+    @Column({nullable: false})
     text: string;
 
     @Column({
         type: 'enum',
-        enum: HintTypeEnum
+        enum: HintTypeEnum,
+        nullable: false,
     })
     type: HintTypeEnum;
 

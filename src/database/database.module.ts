@@ -4,6 +4,7 @@ import {Message} from "../message/entities/message.entity";
 import {Channel} from "../channel/entities/channel.entity";
 import {Config} from "../config/entities/config.entity";
 import {Hint} from "../hint/entities/hint.entity";
+import {DataSource} from "typeorm";
 
 @Module({
     imports: [
@@ -20,4 +21,5 @@ import {Hint} from "../hint/entities/hint.entity";
         }),
     ],
 })
-export class DatabaseModule {}
+export class DatabaseModule {
+}

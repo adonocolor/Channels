@@ -1,12 +1,14 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import {Controller, Get, Post, Body, Param, ValidationPipe, UsePipes} from '@nestjs/common';
 import { ConfigService } from './config.service';
 import { CreateConfigDto } from './dto/create-config.dto';
 
 @Controller('config')
 export class ConfigController {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService,
+              ) {}
 
   @Post()
+  @UsePipes(new ValidationPipe())
   create(@Body() createConfigDto: CreateConfigDto) {
     return this.configService.create(createConfigDto);
   }

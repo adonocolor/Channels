@@ -13,7 +13,7 @@ export class Message {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({})
+    @Column({nullable: false})
     text: string;
 
     @ManyToOne(type => Channel)
