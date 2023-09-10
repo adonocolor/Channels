@@ -22,12 +22,4 @@ export class MessageService {
     const message = new Message(createMessageDto.text, channel)
     return await queryRunner.manager.save(Message, message);
   }
-
-  async findAll() {
-    return await this.messageRepository.find({});
-  }
-
-  async findOne(id: number) {
-    return await this.messageRepository.findOneBy({id: id});
-  }
 }

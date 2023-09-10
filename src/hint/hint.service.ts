@@ -24,12 +24,4 @@ export class HintService {
     const hint = new Hint(createHintDto.text, createHintDto.type, channel)
     return await queryRunner.manager.save(Hint, hint);
   }
-
-  async findAll() {
-    return await this.hintRepository.find({})
-  }
-
-  async findOne(id: number) {
-    return await this.hintRepository.findOneBy({id: id})
-  }
 }

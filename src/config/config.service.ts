@@ -59,12 +59,4 @@ export class ConfigService {
   findOne(id: number) {
     return this.configRepository.findOneBy({id : id});
   }
-
-  // update(id: number, updateConfigDto: UpdateConfigDto) {
-  //   return `This action updates a #${id} config`;
-  // }
-  //
-  // remove(id: number) {
-  //   return `This action removes a #${id} config`;
-  // }
 }
