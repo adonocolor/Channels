@@ -1,11 +1,26 @@
-import {Card} from "react-bootstrap";
+import {Button, Col, Row} from "react-bootstrap";
+import React from "react";
 
-export const Channel = ({id, name}) => {
+export const Channel = ({channel, setCurrentChannel}) => {
 
     return (
-        <Card key={id}>
-            <Card.Title>{name}</Card.Title>
-        </Card>
-    )
+        <Row>
+            <Col>
+                <input className={'form-check'} onChange={(e) => {
 
+                }} value={channel.id} type={'checkbox'}></input>
+            </Col>
+            <Col>
+                <p>{channel.name}</p>
+            </Col>
+            <Col>
+                <Button
+                    onClick={() => {
+                        setCurrentChannel(channel)
+                    }}>
+                    Редактировать
+                </Button>
+            </Col>
+        </Row>
+    )
 }

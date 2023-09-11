@@ -1,7 +1,7 @@
 import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Channel} from "../../channel/entities/channel.entity";
 import {Config} from "../../config/entities/config.entity";
-import {HintTypeEnum} from "./hintType.enum";
+import {HintDisplayEnum, HintTypeEnum} from "./hintType.enum";
 
 @Entity()
 export class Hint {
@@ -24,6 +24,13 @@ export class Hint {
         nullable: false,
     })
     type: HintTypeEnum;
+
+    @Column({
+        type: 'enum',
+        enum: HintDisplayEnum,
+        nullable: false,
+    })
+    displayType: HintDisplayEnum;
 
     @ManyToOne(type => Channel)
     channel: Channel;

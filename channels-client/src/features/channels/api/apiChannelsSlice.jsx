@@ -1,4 +1,4 @@
-import {apiSlice} from "../../app/api/apiSlice";
+import {apiSlice} from "../../../app/api/apiSlice.jsx";
 
 export const channelApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
