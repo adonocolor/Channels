@@ -3,9 +3,9 @@ import {useState} from "react";
 import {useDispatch} from "react-redux";
 import {addMessage} from "../../features/messages/messageSlice.jsx";
 
-export const MessageInput = ({setCurrentChannel, currentChannel, isDisabled}) => {
+export const MessageInput = ({messages, setCurrentChannel, currentChannel, isDisabled}) => {
     const dispatch = useDispatch();
-    let [message, setMessage] = useState('')
+    let [message, setMessage] = useState('');
 
     function handleSubmit() {
         event.preventDefault();
@@ -31,7 +31,7 @@ export const MessageInput = ({setCurrentChannel, currentChannel, isDisabled}) =>
                         }} className={'btn-danger'} disabled={isDisabled}>Закрыть</Button>
                     </Col>
                     <Col>
-                        <FormControl value={message} onChange={() => {
+                        <FormControl maxLength={currentChannel?.textLength} value={message} onChange={() => {
                             setMessage(event.target.value)
                         }
                         } placeholder={'Напишите сообщение здесь...'} disabled={isDisabled}></FormControl>

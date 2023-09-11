@@ -15,7 +15,10 @@ export const HintList = ({isDisabled, currentChannel}) => {
         return (
             <Col className={'p-2'}>
                 <Stack style={{height: "200px"}}>
-                    <div>Сейчас выбран канал с идентификатором: {currentChannel?.id}</div>
+                    <Col>
+                        <div>Сейчас выбран канал: {currentChannel?.name}</div>
+                        <div>Ограничение по кол-ву символов: {currentChannel?.textLength}</div>
+                    </Col>
                 </Stack>
                 <Row>
                     <Button className={'btn-secondary'}>Добавить еще одну подсказку?</Button>
