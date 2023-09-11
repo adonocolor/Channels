@@ -3,7 +3,7 @@ import {apiSlice} from "../../../app/api/apiSlice.jsx";
 export const configApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         saveConfig: builder.mutation({
-            query: ({body}) => ({
+            query: ({...body}) => ({
                 url: '/config',
                 method: 'POST',
                 body: body,
@@ -12,5 +12,5 @@ export const configApiSlice = apiSlice.injectEndpoints({
     })
 })
 
-export const {
+export const { useSaveConfigMutation
 } = configApiSlice

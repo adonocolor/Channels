@@ -1,7 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
-    allMessages: [],
+    messages: [],
 }
 
 const messageSlice = createSlice({
@@ -15,9 +15,9 @@ const messageSlice = createSlice({
                 return;
             }
 
-            for (let i = 0; i  < state.allMessages.length; i++) {
-                if (state.allMessages[i].channelId === payload.currentChannel) {
-                    state.allMessages[i].text = payload.message;
+            for (let i = 0; i  < state.messages.length; i++) {
+                if (state.messages[i].channelId === payload.currentChannel) {
+                    state.messages[i].text = payload.message;
                     return;
                 }
             }
@@ -27,7 +27,7 @@ const messageSlice = createSlice({
                 text: payload.message,
             }
 
-            state.allMessages.push(message);
+            state.messages.push(message);
         }
     }
 })

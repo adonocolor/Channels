@@ -7,14 +7,18 @@ import {useEffect, useState} from "react";
 import {HintList} from "./widgets/Hint/hintList.jsx";
 import "bootstrap/dist/css/bootstrap.min.css"
 import {useDispatch, useSelector} from "react-redux";
+import {useSaveConfigMutation} from "./features/config /api/apiConfigSlice.jsx";
 
 
 function App() {
+
     const {
         data : channels,
         isLoading,
-        error,
+        error: queryError,
     } = useGetChannelsQuery()
+
+    const [saveConfig, {error : mutationError}] = useSaveConfigMutation();
 
     let [isDisabled, setIsDisabled] = useState(true);
     let [currentChannel, setCurrentChannel] = useState(null);
@@ -32,7 +36,8 @@ function App() {
 
     if (isLoading) return <div>Загрузка...</div>
 
-    if (error) return <div>Кажется, что наш сервер не работает! Попробуйте позже...</div>
+    if (queryError) return <div>Кажется, что наш сервер не работает! Попробуйте позже...</div>
+
 
     return (
         <Container>
@@ -42,8 +47,9 @@ function App() {
                 <HintList currentChannel={currentChannel} isDisabled={isDisabled}></HintList>
                 <Button onClick={() => {
                     let obj = {};
-                    obj.messages = Object.values(messages);
-                    obj.hints = Object.values(hints);
+                    Object.assign(obj, messages);
+                    Object.assign(obj, hints);
+                    saveConfig(obj);
                     console.log(obj);
                 }} className={'btn-primary'}>Сохранить конфигурацию</Button>
             </Col>
