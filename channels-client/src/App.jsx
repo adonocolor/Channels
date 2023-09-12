@@ -37,7 +37,6 @@ function App() {
     useEffect(() => {
         setAlertShow(false);
         setAlertMessage(false);
-        setMessage('');
         if (currentChannel !== null) {
             setIsDisabled(false);
         } else {
