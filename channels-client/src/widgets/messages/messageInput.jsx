@@ -8,15 +8,12 @@ export const MessageInput = ({messages, message, setMessage, setCurrentChannel, 
 
     useEffect(() => {
             let found = messages.find(message => message.channelId === currentChannel.id);
-            console.log(found?.text)
             if (found) {
                 setMessage(found.text);
             } else {
                 setMessage('')
             }
     }, [currentChannel])
-
-    console.log(currentChannel.id)
 
     function handleSubmit() {
         event.preventDefault();

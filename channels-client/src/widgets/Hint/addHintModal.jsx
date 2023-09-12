@@ -36,9 +36,6 @@ export const AddHintModal = ({currentChannel, modalDisabled, setModalDisabled}) 
 
     function handleSubmit() {
 
-        console.log(currentChannel);
-        console.log(buttonType, displayType)
-
         if (alertShow) {
             setErrorMessage('');
             setAlertShow(false);
