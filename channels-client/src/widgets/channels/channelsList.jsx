@@ -1,11 +1,11 @@
-import {Row, Stack} from "react-bootstrap";
+import {Col, Row, Stack} from "react-bootstrap";
 import React from "react";
 import {Channel} from "../../entities/channel/channel.jsx";
 
 export const ChannelsList = ({channels, setCurrentChannel, pickedChannels}) => {
 
     return (
-        <Stack>
+        <Col>
             {
                 channels.map(channel => {
                     return (
@@ -14,6 +14,6 @@ export const ChannelsList = ({channels, setCurrentChannel, pickedChannels}) => {
                     )
                 })
             }
-        </Stack>
+        </Col>
     )
 }

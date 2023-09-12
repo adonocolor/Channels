@@ -23,7 +23,7 @@ export const HintList = ({setModalDisabled, isDisabled, currentChannel, hints, s
         )
     } else {
         hintList = (
-            <Stack direction={'horizontal'} className={'overflow-x-auto'}>
+            <Stack style={{height: "260px"}} direction={'horizontal'} className={'overflow-x-auto'}>
                 {
                     hints.map(hint => {
                         if (hint.channelId === currentChannel?.id && Number(hint.displayType) === 1) return (
@@ -47,26 +47,40 @@ export const HintList = ({setModalDisabled, isDisabled, currentChannel, hints, s
     )
     else {
         return (
-            <Col className={'p-2'}>
-                <Stack style={{height: "400px"}}>
-                    <div>Сейчас выбран канал: {currentChannel?.name}</div>
-                    <div>Ограничение по кол-ву символов: {currentChannel?.textLength}</div>
-                    <Button onClick={() => setDisplayType(!displayType)}>Сменить отображение</Button>
-                    <Col className={'hints'}>
+            <Col style={{height: "400px"}}>
+                <Row>
+                    <Col xs={3}>
+                    </Col>
+                    <Col xs={6}>
+                        <div>Сейчас выбран канал: {currentChannel?.name}</div>
+                        <div>Ограничение по кол-ву символов: {currentChannel?.textLength}</div>
+                        <Button onClick={() => setDisplayType(!displayType)}>Сменить отображение</Button>
+                    </Col>
+                    <Col xs={3}>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={3}></Col>
+                    <Col xs={6} className={'hints'}>
                         {hintList}
                     </Col>
-                    <Row>
-                        <Col>
-                            <Button variant={"danger"} onClick={() => dispatch(deleteLastHint(currentChannel.id))}>Удалить последнюю подсказку</Button>
-                        </Col>
-                        <Col>
-                            <Button className={'btn-secondary'} onClick={() => setModalDisabled(false)}>Добавить еще
-                                одну
-                                подсказку?</Button>
-                        </Col>
-                    </Row>
-                </Stack>
-            </Col>
-        )
+                    <Col xs={3}></Col>
+                </Row>
+                <Row>
+                    <Col xs={3}>
+                    </Col>
+                    <Col xs={3}>
+                        <Button variant={"danger"} onClick={() => dispatch(deleteLastHint(currentChannel.id))}>Удалить
+                            последнюю подсказку</Button>
+                    </Col>
+                    <Col xs={3}>
+                        <Button className={'btn-secondary'} onClick={() => setModalDisabled(false)}>Добавить еще
+                            одну
+                            подсказку?</Button>
+                    </Col>
+                    <Col xs={3}>
+                    </Col>
+                </Row>
+            </Col>)
     }
 }

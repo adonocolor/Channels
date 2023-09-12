@@ -50,35 +50,36 @@ function App() {
 
 
     return (
-        <Container>
+        <Container fluid>
             <ChannelsList pickedChannels={pickedChannels} setCurrentChannel={setCurrentChannel}
                           channels={channels}></ChannelsList>
-                <MessageInput messages={messages} message={message} setMessage={setMessage} setCurrentChannel={setCurrentChannel}
-                              currentChannel={currentChannel}
-                              isDisabled={isDisabled}></MessageInput>
-                <HintList hints={hints} displayType={displayType} message={message} setMessage={setMessage}
-                          modalDisabled={modalDisabled} setModalDisabled={setModalDisabled}
-                          currentChannel={currentChannel} isDisabled={isDisabled}></HintList>
-                <AddHintModal currentChannel={currentChannel} modalDisabled={modalDisabled}
-                              setModalDisabled={setModalDisabled}></AddHintModal>
-                <Col>
-                    <Button onClick={() => {
-                        let obj = {
-                            messages: messages.filter(message => pickedChannels.map(channel => message.channelId === channel)),
-                            hints: hints.filter(hint => pickedChannels.map(channel => hint.channelId === channel)),
-                        };
-                        if (obj.messages.length === 0 && obj.hints.length === 0) {
-                            setAlertShow(true);
-                            setAlertMessage('В пустой конфигурации нету смысла 😁');
-                            return;
-                        }
+            <MessageInput messages={messages} message={message} setMessage={setMessage}
+                          setCurrentChannel={setCurrentChannel}
+                          currentChannel={currentChannel}
+                          isDisabled={isDisabled}></MessageInput>
+            <HintList hints={hints} displayType={displayType} message={message} setMessage={setMessage}
+                      modalDisabled={modalDisabled} setModalDisabled={setModalDisabled}
+                      currentChannel={currentChannel} isDisabled={isDisabled}></HintList>
+            <AddHintModal currentChannel={currentChannel} modalDisabled={modalDisabled}
+                          setModalDisabled={setModalDisabled}></AddHintModal>
+            <Col>
+                <Button onClick={() => {
+                    let obj = {
+                        messages: messages.filter(message => pickedChannels.map(channel => message.channelId === channel)),
+                        hints: hints.filter(hint => pickedChannels.map(channel => hint.channelId === channel)),
+                    };
+                    if (obj.messages.length === 0 && obj.hints.length === 0) {
                         setAlertShow(true);
-                        setAlertMessage('Конфигурация была успешно сохранена в базу данных!');
-                        saveConfig(obj);
+                        setAlertMessage('В пустой конфигурации нету смысла 😁');
+                        return;
                     }
-                    } className={'btn-primary'}>Сохранить конфигурацию</Button>
-                </Col>
+                    setAlertShow(true);
+                    setAlertMessage('Конфигурация была успешно сохранена в базу данных!');
+                    saveConfig(obj);
+                }
+                } className={'btn-primary'}>Сохранить конфигурацию</Button>
                 <Alert show={alertShow} variant={'info'}>{alertMessage}</Alert>
+            </Col>
         </Container>
     )
 }

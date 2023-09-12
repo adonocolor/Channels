@@ -27,28 +27,28 @@ export const MessageInput = ({messages, message, setMessage, setCurrentChannel, 
     }
 
     return (
-        <Stack>
+        <Col>
             <Form onSubmit={() => {
                 handleSubmit()
             }}>
                 <Row>
-                    <Col>
+                    <Col xs={3}>
                         <Button onClick={() => {
                             setCurrentChannel(null);
                         }} className={'btn-danger'} disabled={isDisabled}>Закрыть</Button>
                     </Col>
-                    <Col>
+                    <Col xs={6}>
                         <FormControl maxLength={currentChannel?.textLength} value={message} onChange={() => {
                             setMessage(event.target.value)
                         }
                         } placeholder={'Напишите сообщение здесь...'} disabled={isDisabled}></FormControl>
                     </Col>
-                    <Col>
+                    <Col xs={3}>
                         <Button className={'btn-primary'} type='submit' disabled={isDisabled}>Сохранить
                             сообщение</Button>
                     </Col>
                 </Row>
             </Form>
-        </Stack>
+        </Col>
     )
 }

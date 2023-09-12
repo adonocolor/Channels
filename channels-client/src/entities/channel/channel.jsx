@@ -18,16 +18,16 @@ export const Channel = ({channel, setCurrentChannel, pickedChannels}) => {
     }
 
     return (
-        <Stack direction={'horizontal'}>
-            <Col>
+        <Row>
+            <Col xs={3}>
                 <input className={'form-check-input'} onChange={(e) => {
                     handleChange(e.target.checked, e.target.value)
                 }} value={channel.id} type={'checkbox'}></input>
             </Col>
-            <Col>
+            <Col xs={6}>
                 <p>{channel.name}</p>
             </Col>
-            <Col>
+            <Col xs={3}>
                 <Button
                     onClick={() => {
                         setCurrentChannel(channel)
@@ -35,6 +35,6 @@ export const Channel = ({channel, setCurrentChannel, pickedChannels}) => {
                     Редактировать
                 </Button>
             </Col>
-        </Stack>
+        </Row>
     )
 }
