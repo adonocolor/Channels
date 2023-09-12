@@ -20,31 +20,49 @@ export const AddHintModal = ({currentChannel, modalDisabled, setModalDisabled}) 
         setAlertShow(false);
     }, [currentChannel])
 
+    useEffect(() => {
+        setText('');
+        setDisplayType(0);
+        setButtonType(0);
+    }, [modalDisabled])
+
+    const urlPatternValidation = (URL) => {
+        const regex = new RegExp('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?');
+        return regex.test(URL);
+    };
+
+
     function handleSubmit() {
         if (alertShow) {
             setErrorMessage('');
             setAlertShow(false);
         }
 
+        if (Number(buttonType) === 1 && !urlPatternValidation(text)) {
+            setErrorMessage('Текст не является ссылкой!');
+            setAlertShow(true);
+            return;
+        }
+
         // Hint validation
-        switch (displayType) {
+        switch (Number(displayType)) {
             case 0:
-                if (text.length > currentChannel.standardButtonTextLength && currentChannel.standardButtonTextLength !== null) {
+                if (text.length > currentChannel.standardButtonTextLength && currentChannel.standardButtonTextLength) {
                     setErrorMessage('Превышает допустимое количество символов для вида отображаемой клавиауры!');
                     setAlertShow(true);
                     return;
                 }
 
-                switch (buttonType) {
+                switch (Number(buttonType)) {
                     case 0:
                         const standardButtonCount = hints.map(hint => {
                             if (hint.channelId === currentChannel.id
-                                && hint.type === buttonType
-                                && hint.displayType === displayType)
+                                && hint.type === 0
+                                && hint.displayType === 0)
                                 return hint
                         }).length;
 
-                        if (standardButtonCount > currentChannel.standardButtonCount && currentChannel.standardButtonCount !== null) {
+                        if (standardButtonCount > currentChannel.standardButtonCount && currentChannel.standardButtonCount) {
                             setErrorMessage('Превышает допустимое количество кнопок для выбранного ' +
                                 'типа отображения и вида кнопок!');
                             setAlertShow(true);
@@ -53,12 +71,12 @@ export const AddHintModal = ({currentChannel, modalDisabled, setModalDisabled}) 
                     case 1:
                         const standardButtonLinkCount = hints.map(hint => {
                             if (hint.channelId === currentChannel.id
-                                && hint.type === buttonType
-                                && hint.displayType === displayType)
+                                && hint.type === 1
+                                && hint.displayType === 0)
                                 return hint
                         }).length;
 
-                        if (standardButtonCount > currentChannel.standardButtonLinkCount && currentChannel.standardButtonLinkCount !== null) {
+                        if (standardButtonLinkCount > currentChannel.standardButtonLinkCount && currentChannel.standardButtonLinkCount) {
                             setErrorMessage('Превышает допустимое количество кнопок для выбранного ' +
                                 'типа отображения и вида кнопок!');
                             setAlertShow(true);
@@ -66,22 +84,22 @@ export const AddHintModal = ({currentChannel, modalDisabled, setModalDisabled}) 
                         }
                 }
             case 1:
-                if (text.length > currentChannel.inlineButtonTextLength && currentChannel.inlineButtonTextLength !== null) {
+                if (text.length > currentChannel.inlineButtonTextLength && currentChannel.inlineButtonTextLength) {
                     setErrorMessage('Превышает допустимое количество символов для вида отображаемой клавиауры!');
                     setAlertShow(true);
                     return;
                 }
 
-                switch (buttonType) {
+                switch (Number(buttonType)) {
                     case 0:
                         const inlineButtonCount = hints.map(hint => {
                             if (hint.channelId === currentChannel.id
-                                && hint.type === buttonType
-                                && hint.displayType === displayType)
+                                && hint.type === 0
+                                && hint.displayType === 1)
                                 return hint
                         }).length;
 
-                        if (inlineButtonCount > currentChannel.inlineButtonCount && currentChannel.inlineButtonCount !== null) {
+                        if (inlineButtonCount > currentChannel.inlineButtonCount && currentChannel.inlineButtonCount) {
                             setErrorMessage('Превышает допустимое количество кнопок для выбранного ' +
                                 'типа отображения и вида кнопок!');
                             setAlertShow(true);
@@ -90,12 +108,12 @@ export const AddHintModal = ({currentChannel, modalDisabled, setModalDisabled}) 
                     case 1:
                         const inlineButtonLinkCount = hints.map(hint => {
                             if (hint.channelId === currentChannel.id
-                                && hint.type === buttonType
-                                && hint.displayType === displayType)
+                                && hint.type === 1
+                                && hint.displayType === 1)
                                 return hint
                         }).length;
 
-                        if (inlineButtonLinkCount > currentChannel.inlineButtonLinkCount && currentChannel.inlineButtonLinkCount ) {
+                        if (inlineButtonLinkCount > currentChannel.inlineButtonLinkCount && currentChannel.inlineButtonLinkCount) {
                             setErrorMessage('Превышает допустимое количество кнопок для выбранного ' +
                                 'типа отображения и вида кнопок!');
                             setAlertShow(true);
@@ -140,10 +158,10 @@ export const AddHintModal = ({currentChannel, modalDisabled, setModalDisabled}) 
                     <FormLabel className={'mt-2'}>Отображение кнопки</FormLabel>
                     <FormSelect value={displayType} onChange={() => setDisplayType(event.target.value)}>
                         <option value={0}>Стандартное отображение</option>
-                        <option value={1}>Inline отображение</option>
+                        <option value={1}>Inline-отображение</option>
                     </FormSelect>
                 </Form>
-                <Alert classname={'fade'} show={alertShow} variant={'danger'} className={'mt-2'}>{errorMessage}</Alert>
+                <Alert className={'fade'} show={alertShow} variant={'danger'} className={'mt-2'}>{errorMessage}</Alert>
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={() => {
@@ -153,4 +171,5 @@ export const AddHintModal = ({currentChannel, modalDisabled, setModalDisabled}) 
                 </Button>
             </Modal.Footer>
         </Modal>
-    )}
+    )
+}

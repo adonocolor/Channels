@@ -1,5 +1,5 @@
 import './App.css'
-import {Button, Col, Container, Modal} from "react-bootstrap";
+import {Alert, Button, Col, Container, Modal} from "react-bootstrap";
 import {ChannelsList} from "./widgets/channels/channelsList.jsx";
 import {useGetChannelsQuery} from "./features/channels/api/apiChannelsSlice.jsx";
 import {MessageInput} from "./widgets/messages/messageInput.jsx";
@@ -24,13 +24,20 @@ function App() {
     let [isDisabled, setIsDisabled] = useState(true);
     let [modalDisabled, setModalDisabled] = useState(true);
     let [currentChannel, setCurrentChannel] = useState(null);
+    let [message, setMessage] = useState('');
+    let [displayType, setDisplayType] = useState('');
+    let [alertMessage, setAlertMessage] = useState('')
+    let [alertShow, setAlertShow] = useState(false);
 
-    const messages = useSelector(store => store.messageSlice);
-    const hints = useSelector(store => store.hintSlice);
+    const messages = useSelector(store => store.messageSlice.messages);
+    const hints = useSelector(store => store.hintSlice.hints);
     const pickedChannels = useSelector(state => state.channelSlice.channels);
 
 
     useEffect(() => {
+        setAlertShow(false);
+        setAlertMessage(false);
+        setMessage('');
         if (currentChannel !== null) {
             setIsDisabled(false);
         } else {
@@ -48,19 +55,32 @@ function App() {
             <ChannelsList pickedChannels={pickedChannels} setCurrentChannel={setCurrentChannel}
                           channels={channels}></ChannelsList>
             <Col className={'d-flex flex-column'}>
-                <MessageInput messages={messages} setCurrentChannel={setCurrentChannel} currentChannel={currentChannel}
+                <MessageInput messages={messages} message={message} setMessage={setMessage} setCurrentChannel={setCurrentChannel}
+                              currentChannel={currentChannel}
                               isDisabled={isDisabled}></MessageInput>
-                <HintList modalDisabled={modalDisabled} setModalDisabled={setModalDisabled} currentChannel={currentChannel} isDisabled={isDisabled}></HintList>
-                <AddHintModal currentChannel={currentChannel} modalDisabled={modalDisabled} setModalDisabled={setModalDisabled}></AddHintModal>
-                <Button onClick={() => {
-                    let obj = {
-                        messages: Object.values(messages).filter(message => pickedChannels.map(channel => message.channelId === channel)),
-                        hints: Object.values(hints).filter(hint => pickedChannels.map(channel => hint.channelId === channel)),
-                    };
-
-                    saveConfig(obj);
-                }
-                } className={'btn-primary'}>Сохранить конфигурацию</Button>
+                <HintList hints={hints} displayType={displayType} message={message} setMessage={setMessage}
+                          modalDisabled={modalDisabled} setModalDisabled={setModalDisabled}
+                          currentChannel={currentChannel} isDisabled={isDisabled}></HintList>
+                <AddHintModal currentChannel={currentChannel} modalDisabled={modalDisabled}
+                              setModalDisabled={setModalDisabled}></AddHintModal>
+                <Col>
+                    <Button onClick={() => {
+                        let obj = {
+                            messages: messages.filter(message => pickedChannels.map(channel => message.channelId === channel)),
+                            hints: hints.filter(hint => pickedChannels.map(channel => hint.channelId === channel)),
+                        };
+                        if (obj.messages.length === 0 && obj.hints.length === 0) {
+                            setAlertShow(true);
+                            setAlertMessage('В пустой конфигурации нету смысла 😁');
+                            return;
+                        }
+                        setAlertShow(true);
+                        setAlertMessage('Конфигурация была успешно сохранена в базу данных!');
+                        saveConfig(obj);
+                    }
+                    } className={'btn-primary'}>Сохранить конфигурацию</Button>
+                </Col>
+                <Alert show={alertShow} variant={'info'}>{alertMessage}</Alert>
             </Col>
         </Container>
     )

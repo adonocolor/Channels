@@ -11,9 +11,14 @@ const hintSlice = createSlice({
         addHint: (state, action) => {
             const payload = action.payload;
             state.hints.push(payload);
+        },
+        deleteLastHint: (state, action) => {
+            const payload = action.payload;
+            let index = state.hints.findLastIndex(hint => hint.channelId === payload);
+            state.hints.splice(index, 1);
         }
     }
 })
 
 export default hintSlice.reducer;
-export const {addHint} = hintSlice.actions;
+export const {addHint, deleteLastHint} = hintSlice.actions;

@@ -1,11 +1,15 @@
-import {Button, Col, Form, FormControl, Row} from "react-bootstrap";
-import {useState} from "react";
+import {Button, Col, Form, FormControl, Row, Stack} from "react-bootstrap";
 import {useDispatch} from "react-redux";
 import {addMessage} from "../../features/messages/messageSlice.jsx";
 
-export const MessageInput = ({messages, setCurrentChannel, currentChannel, isDisabled}) => {
+export const MessageInput = ({messages, message, setMessage, setCurrentChannel, currentChannel, isDisabled}) => {
     const dispatch = useDispatch();
-    let [message, setMessage] = useState('');
+    if (currentChannel) {
+        let found = messages.find(message => message.channelId === currentChannel.id);
+        if (found) {
+            setMessage(found.text);
+        }
+    }
 
     function handleSubmit() {
         event.preventDefault();
@@ -20,7 +24,7 @@ export const MessageInput = ({messages, setCurrentChannel, currentChannel, isDis
     }
 
     return (
-        <Row>
+        <Stack>
             <Form onSubmit={() => {
                 handleSubmit()
             }}>
@@ -42,6 +46,6 @@ export const MessageInput = ({messages, setCurrentChannel, currentChannel, isDis
                     </Col>
                 </Row>
             </Form>
-        </Row>
+        </Stack>
     )
 }

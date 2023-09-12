@@ -1,4 +1,4 @@
-import {Button, Col, Row} from "react-bootstrap";
+import {Button, Col, Form, Row, Stack} from "react-bootstrap";
 import React from "react";
 import {addChannel, removeChannel} from "../../features/channels/channelSlice.jsx";
 import {useDispatch, useSelector} from "react-redux";
@@ -18,9 +18,9 @@ export const Channel = ({channel, setCurrentChannel, pickedChannels}) => {
     }
 
     return (
-        <Row>
+        <Stack direction={'horizontal'}>
             <Col>
-                <input className={'form-check'} onChange={(e) => {
+                <input className={'form-check-input'} onChange={(e) => {
                     handleChange(e.target.checked, e.target.value)
                 }} value={channel.id} type={'checkbox'}></input>
             </Col>
@@ -35,6 +35,6 @@ export const Channel = ({channel, setCurrentChannel, pickedChannels}) => {
                     Редактировать
                 </Button>
             </Col>
-        </Row>
+        </Stack>
     )
 }
