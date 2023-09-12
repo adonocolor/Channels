@@ -1,6 +1,6 @@
 import {Button, Col, Row, Stack} from "react-bootstrap";
 
-export const HintList = ({isDisabled, currentChannel}) => {
+export const HintList = ({setModalDisabled, isDisabled, currentChannel}) => {
     let hintList = (<></>);
     if (isDisabled) return (
         <Col className={'p-2'}>
@@ -21,10 +21,10 @@ export const HintList = ({isDisabled, currentChannel}) => {
                     </Col>
                 </Stack>
                 <Row>
-                    <Button className={'btn-secondary'}>Добавить еще одну подсказку?</Button>
+                    <Button className={'btn-secondary'} onClick={() => setModalDisabled(false)}>Добавить еще одну подсказку?</Button>
                 </Row>
             </Col>
-        )
+    )
     }
 
     return hintList;

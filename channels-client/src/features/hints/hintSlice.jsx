@@ -7,7 +7,13 @@ const initialState = {
 const hintSlice = createSlice({
     name: 'hintSlice',
     initialState,
-    reducers: {}
+    reducers: {
+        addHint: (state, action) => {
+            const payload = action.payload;
+            state.hints.push(payload);
+        }
+    }
 })
 
 export default hintSlice.reducer;
+export const {addHint} = hintSlice.actions;
