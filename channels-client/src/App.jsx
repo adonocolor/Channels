@@ -54,7 +54,6 @@ function App() {
         <Container>
             <ChannelsList pickedChannels={pickedChannels} setCurrentChannel={setCurrentChannel}
                           channels={channels}></ChannelsList>
-            <Col className={'d-flex flex-column'}>
                 <MessageInput messages={messages} message={message} setMessage={setMessage} setCurrentChannel={setCurrentChannel}
                               currentChannel={currentChannel}
                               isDisabled={isDisabled}></MessageInput>
@@ -81,7 +80,6 @@ function App() {
                     } className={'btn-primary'}>Сохранить конфигурацию</Button>
                 </Col>
                 <Alert show={alertShow} variant={'info'}>{alertMessage}</Alert>
-            </Col>
         </Container>
     )
 }

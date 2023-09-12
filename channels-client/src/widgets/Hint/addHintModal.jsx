@@ -22,8 +22,10 @@ export const AddHintModal = ({currentChannel, modalDisabled, setModalDisabled}) 
 
     useEffect(() => {
         setText('');
-        setDisplayType(0);
-        setButtonType(0);
+        setDisplayType(Number(0));
+        setButtonType(Number(0));
+        setErrorMessage('');
+        setAlertShow(false);
     }, [modalDisabled])
 
     const urlPatternValidation = (URL) => {
@@ -33,9 +35,19 @@ export const AddHintModal = ({currentChannel, modalDisabled, setModalDisabled}) 
 
 
     function handleSubmit() {
+
+        console.log(currentChannel);
+        console.log(buttonType, displayType)
+
         if (alertShow) {
             setErrorMessage('');
             setAlertShow(false);
+        }
+
+        if (text.length === 0) {
+            setErrorMessage('Введите что-нибудь!');
+            setAlertShow(true);
+            return;
         }
 
         if (Number(buttonType) === 1 && !urlPatternValidation(text)) {
@@ -45,87 +57,83 @@ export const AddHintModal = ({currentChannel, modalDisabled, setModalDisabled}) 
         }
 
         // Hint validation
-        switch (Number(displayType)) {
-            case 0:
-                if (text.length > currentChannel.standardButtonTextLength && currentChannel.standardButtonTextLength) {
-                    setErrorMessage('Превышает допустимое количество символов для вида отображаемой клавиауры!');
+
+        if (displayType === 0) {
+            if (currentChannel.standardButtonTextLength && text.length > currentChannel.standardButtonTextLength) {
+                setErrorMessage('Превышает допустимое количество символов для вида отображаемой клавиауры!');
+                setAlertShow(true);
+                return;
+            }
+
+            if (buttonType === 0) {
+                const standardButtonCount = hints.map(hint => {
+                    if (hint.channelId === currentChannel.id
+                        && hint.type === buttonType
+                        && hint.displayType === displayType)
+                        return hint
+                }).length + 1;
+
+                if (currentChannel.standardButtonCount && standardButtonCount >= currentChannel.standardButtonCount) {
+                    setErrorMessage('Превышает допустимое количество кнопок для выбранного ' +
+                        'типа отображения и вида кнопок!');
                     setAlertShow(true);
                     return;
                 }
+            }
+            if (buttonType === 1) {
+                const standardButtonLinkCount = hints.map(hint => {
+                    if (hint.channelId === currentChannel.id
+                        && hint.type === buttonType
+                        && hint.displayType === displayType)
+                        return hint
+                }).length;
 
-                switch (Number(buttonType)) {
-                    case 0:
-                        const standardButtonCount = hints.map(hint => {
-                            if (hint.channelId === currentChannel.id
-                                && hint.type === 0
-                                && hint.displayType === 0)
-                                return hint
-                        }).length;
-
-                        if (standardButtonCount > currentChannel.standardButtonCount && currentChannel.standardButtonCount) {
-                            setErrorMessage('Превышает допустимое количество кнопок для выбранного ' +
-                                'типа отображения и вида кнопок!');
-                            setAlertShow(true);
-                            return
-                        }
-                    case 1:
-                        const standardButtonLinkCount = hints.map(hint => {
-                            if (hint.channelId === currentChannel.id
-                                && hint.type === 1
-                                && hint.displayType === 0)
-                                return hint
-                        }).length;
-
-                        if (standardButtonLinkCount > currentChannel.standardButtonLinkCount && currentChannel.standardButtonLinkCount) {
-                            setErrorMessage('Превышает допустимое количество кнопок для выбранного ' +
-                                'типа отображения и вида кнопок!');
-                            setAlertShow(true);
-                            return
-                        }
-                }
-            case 1:
-                if (text.length > currentChannel.inlineButtonTextLength && currentChannel.inlineButtonTextLength) {
-                    setErrorMessage('Превышает допустимое количество символов для вида отображаемой клавиауры!');
+                if (currentChannel.standardButtonLinkCount && standardButtonLinkCount >= currentChannel.standardButtonLinkCount) {
+                    setErrorMessage('Превышает допустимое количество кнопок для выбранного ' +
+                        'типа отображения и вида кнопок!');
                     setAlertShow(true);
-                    return;
+                    return
                 }
-
-                switch (Number(buttonType)) {
-                    case 0:
-                        const inlineButtonCount = hints.map(hint => {
-                            if (hint.channelId === currentChannel.id
-                                && hint.type === 0
-                                && hint.displayType === 1)
-                                return hint
-                        }).length;
-
-                        if (inlineButtonCount > currentChannel.inlineButtonCount && currentChannel.inlineButtonCount) {
-                            setErrorMessage('Превышает допустимое количество кнопок для выбранного ' +
-                                'типа отображения и вида кнопок!');
-                            setAlertShow(true);
-                            return
-                        }
-                    case 1:
-                        const inlineButtonLinkCount = hints.map(hint => {
-                            if (hint.channelId === currentChannel.id
-                                && hint.type === 1
-                                && hint.displayType === 1)
-                                return hint
-                        }).length;
-
-                        if (inlineButtonLinkCount > currentChannel.inlineButtonLinkCount && currentChannel.inlineButtonLinkCount) {
-                            setErrorMessage('Превышает допустимое количество кнопок для выбранного ' +
-                                'типа отображения и вида кнопок!');
-                            setAlertShow(true);
-                            return
-                        }
-                }
+            }
         }
 
-        if (text.length === 0) {
-            setErrorMessage('Введите что-нибудь!');
-            setAlertShow(true);
-            return;
+        if (displayType === 1) {
+            if (currentChannel.inlineButtonTextLength && text.length > currentChannel.inlineButtonTextLength) {
+                setErrorMessage('Превышает допустимое количество символов для вида отображаемой клавиауры!');
+                setAlertShow(true);
+                return;
+            }
+
+            if (buttonType === 0) {
+                const inlineButtonCount = hints.filter(hint => {
+                    if (hint.channelId === currentChannel.id
+                        && hint.type === 0
+                        && hint.displayType === 1)
+                        return hint
+                }).length;
+
+                if (currentChannel.inlineButtonCount && inlineButtonCount >= currentChannel.inlineButtonCount) {
+                    setErrorMessage('Превышает допустимое количество кнопок для выбранного ' +
+                        'типа отображения и вида кнопок!');
+                    setAlertShow(true);
+                    return
+                }
+            }
+            if (buttonType === 1) {
+                const inlineButtonLinkCount = hints.map(hint => {
+                    if (hint.channelId === currentChannel.id
+                        && hint.type === 1
+                        && hint.displayType === 1)
+                        return hint
+                }).length;
+
+                if (currentChannel.inlineButtonLinkCount && inlineButtonLinkCount >= currentChannel.inlineButtonLinkCount) {
+                    setErrorMessage('Превышает допустимое количество кнопок для выбранного ' +
+                        'типа отображения и вида кнопок!');
+                    setAlertShow(true);
+                    return
+                }
+            }
         }
 
         const formData = {
@@ -151,17 +159,17 @@ export const AddHintModal = ({currentChannel, modalDisabled, setModalDisabled}) 
                     <FormControl placeholder={'Текст подсказки'} value={text}
                                  onChange={() => setText(event.target.value)}/>
                     <FormLabel className={'mt-2'}>Тип кнопки</FormLabel>
-                    <FormSelect value={buttonType} onChange={() => setButtonType(event.target.value)}>
+                    <FormSelect value={buttonType} onChange={() => setButtonType(Number(event.target.value))}>
                         <option value={0}>Обычная кнопка</option>
                         <option value={1}>URL</option>
                     </FormSelect>
                     <FormLabel className={'mt-2'}>Отображение кнопки</FormLabel>
-                    <FormSelect value={displayType} onChange={() => setDisplayType(event.target.value)}>
+                    <FormSelect value={displayType} onChange={() => setDisplayType(Number(event.target.value))}>
                         <option value={0}>Стандартное отображение</option>
                         <option value={1}>Inline-отображение</option>
                     </FormSelect>
                 </Form>
-                <Alert className={'fade'} show={alertShow} variant={'danger'} className={'mt-2'}>{errorMessage}</Alert>
+                <Alert className={'fade mt-2'} show={alertShow} variant={'danger'}>{errorMessage}</Alert>
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={() => {
