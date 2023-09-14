@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import { CreateConfigDto } from './dto/create-config.dto';
 import {Connection, Repository} from "typeorm";
 import {Config} from "./entities/config.entity";
@@ -24,7 +24,12 @@ export class ConfigService {
 
     try {
       let messages = [];
+      let messagesSet = new Set();
       for (let i = 0; i < createConfigDto.messages.length; i++) {
+        if (messagesSet.has(createConfigDto.messages[i].channelId)) {
+          throw new HttpException('Duplicate channelId messages!', HttpStatus.BAD_REQUEST);
+        }
+        messagesSet.add(createConfigDto.messages[i].channelId);
         const created = await this.messageService.create(queryRunner, createConfigDto.messages[i]);
         messages.push(created);
       }

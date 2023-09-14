@@ -1,4 +1,4 @@
-import {HintTypeEnum} from "../entities/hintType.enum";
+import {HintDisplayEnum, HintTypeEnum} from "../entities/hintType.enum";
 import {IsEnum, IsInt, IsNotEmpty, IsString} from "class-validator";
 
 export class CreateHintDto {
@@ -9,6 +9,10 @@ export class CreateHintDto {
     @IsEnum(HintTypeEnum)
     @IsNotEmpty()
     type: HintTypeEnum;
+
+    @IsEnum(HintDisplayEnum)
+    @IsNotEmpty()
+    displayType: HintDisplayEnum;
 
     @IsInt()
     @IsNotEmpty()

@@ -21,7 +21,7 @@ export class HintService {
     if (!channel)
       throw new HttpException('Channel not found!', HttpStatus.NOT_FOUND)
 
-    const hint = new Hint(createHintDto.text, createHintDto.type, channel)
+    const hint = new Hint(createHintDto.text, createHintDto.type, channel, createHintDto.displayType)
     return await queryRunner.manager.save(Hint, hint);
   }
 }

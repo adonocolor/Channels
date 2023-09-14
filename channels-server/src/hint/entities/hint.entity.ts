@@ -6,10 +6,11 @@ import {HintDisplayEnum, HintTypeEnum} from "./hintType.enum";
 @Entity()
 export class Hint {
 
-    constructor(text: string, type: HintTypeEnum, channel: Channel) {
+    constructor(text: string, type: HintTypeEnum, channel: Channel, displayType: HintDisplayEnum) {
         this.text = text;
         this.channel = channel;
         this.type = type;
+        this.displayType = displayType;
     }
 
     @PrimaryGeneratedColumn()

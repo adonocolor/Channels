@@ -37,3 +37,24 @@
 
 # Схема базы данных
 ![scheme](readmeMedia/channel.png)
+
+# Пример передачи объекта JSON для сохранения конфигурации
+**POST** http://localhost:3000/config
+```
+{
+    "messages" : [
+       {
+           "text" : "hello!",
+           "channelId" : 1
+       }
+    ],
+    "hints" : [
+       {
+           "text": "hello!",
+           "type": 0,
+           "channelId": 1,
+           "displayType" : 1
+       }
+    ]
+}
+```
