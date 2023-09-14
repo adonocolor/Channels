@@ -65,8 +65,8 @@ function App() {
             <Col>
                 <Button onClick={() => {
                     let obj = {
-                        messages: messages.filter(message => pickedChannels.map(channel => message.channelId === channel)),
-                        hints: hints.filter(hint => pickedChannels.map(channel => hint.channelId === channel)),
+                        messages: messages.filter(message => pickedChannels.find(channel => message.channelId === Number(channel))),
+                        hints: hints.filter(hint => pickedChannels.find(channel => hint.channelId === Number(channel))),
                     };
                     if (obj.messages.length === 0 && obj.hints.length === 0) {
                         setAlertShow(true);
